@@ -1,0 +1,47 @@
+>> 📌 Choose the **`test-ptss-one.ptss`** style sheet
+   to render this correctly. <<
+
+sample text for `test-ptss-one.ptss`
+---------------------------
+
+    Warning: Do not do this at home.
+
+>> this is some
+very sage advice. <<
+
+|this is
+|some 
+|code
+
+    this is
+    some indented
+    text
+
+just a paragraph 
+
+        this is indented by
+        8 spaces.
+
+    this is indented by
+    4 spaces.
+
+        this is indented by
+        8 absolute spaces, but only
+        4 relative spaces.
+
+++++++++++++++++++++++++++++++++++++
+this is fenced
+by `+` at top and bottom
+++++++++++++++++++++++++++++++++++++
+
+  –––––––––––––––––––––––––––––––––––––
+  | this is bordered
+  | at the top and bottom by `-`
+  | and at the left by `|`
+  –––––––––––––––––––––––––––––––––––––
+
+  *************************************
+  * this is borderd
+  * on three sides by `*`
+  *************************************
+

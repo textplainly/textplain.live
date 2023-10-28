@@ -1,0 +1,105 @@
+.otv-root {
+    margin-block-start: 0;
+    padding-left: 0;
+}
+
+.otv-entry {
+}
+
+.otv-root, .otv-entry-list {
+    list-style-type: none;
+}
+
+/* todo![now] must be same as .otv-caret-icon width. use variable? */
+.otv-entry-list {
+    padding-left: 18px;
+    list-style-type: none;
+}
+
+.otv-line {
+    margin: 4px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.otv-caret-icon {
+    width: 18px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.otv-empty-icon {
+    width: 18px;
+}
+
+.otv-json-type {
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+.otv-json-key {
+    color: #444;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+.otv-json-index {
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+.otv-json-separator {
+
+}
+
+.otv-json-value {
+    margin-left: 8px;
+}
+
+.otv-json-value pre {
+    margin-top: 0;
+    margin-bottom: 0;
+    background: rgba(223, 223, 229, 0.45);
+}
+
+.otv-json-number {
+    color: #f9ae58;
+}
+
+.otv-json-boolean {
+    color: #ec5f66;
+}
+
+.otv-json-string {
+    color: #86b25c;
+}
+
+.otv-json-undefined, .otv-json-null {
+    color: red;
+}
+
+.otv-json-size {
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+.otv-hide {
+    display: none;
+}
+
+.otv-fas {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.otv-fa-caret-down {
+    border-width: 6px 5px 0 5px;
+    border-color: #808080 transparent
+}
+
+.otv-fa-caret-right {
+    border-width: 5px 0 5px 6px;
+    border-color: transparent transparent transparent #808080;
+}

@@ -1,0 +1,53 @@
+> ### 🏈 punting on Beyond Markdown for now
+> PTSS is targetting the human-oriented to the human-natural
+> range of plain text styles. Markdown and reStructuredText
+> represent the start of that range. *Beyond Markdown* is a
+> toward the machine oriented relative to Markdown:
+>
+> - It's disallowal of clean shortcut references is a decision
+>   in favor of the machine (it's pretty much the argument for
+>   the change) and against the human.
+> - It's changes to lists are patently machine oriented. The
+>   things being disallowed humans have no problem reading.
+> - The introduction of attributes moves the plain text in
+>   the direction of being source code.
+>
+> The other three ideas are fine.
+>
+> THAT SAID, if it is easy to implement Beyond Markdown with
+> PTSS with no more that very minor tweaks to what PTSS supports,
+> might as well create the stylesheet as a demo at least.
+
+
+# Beyond Markdown demo
+
+*A demonstration of John MacFarlane's ideas in [Beyond Markdown]
+implemented using PTSS.*
+
+To get an idea of how simple and straightforward Plain Text Stylesheets are, check out
+[the diff] between `commonmark.ptss` and `beyond-markdown.ptss`.
+
+The sections below parallel the six sections of the [Beyond Markdown] essay. I've even adopted the CSS from John's essay.
+
+## 1. Emphasis
+
+
+## 2. Reference links
+
+
+## 3. Code
+
+
+## 4. Lists
+
+
+## 5. HTML
+
+
+## 6. Attributes
+
+
+[Beyond Markdown]: https://www.johnmacfarlane.net/beyond-markdown.html
+
+[the diff]: link-to-diff
+

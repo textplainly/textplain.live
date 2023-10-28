@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>textplain.js *live*</title>
+    <script type="module">
+        document.documentElement.classList.remove('no-js')
+        document.documentElement.classList.add('js')
+    </script>
+    <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="textplain-live.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/favicon-32x32.png" type="image/png"/>
+    <link rel="manifest" href="/manifest.json" crossorigin="anonymous"/>
+    <meta name="theme-color" content="#4d0066"/>
+    <!-- todo![now] nix jquery -->
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.bundle.min.js"></script>
+    <script src="lodash.min.js"></script>
+    <script src="leader-line.min.js"></script>
+    <script src="ace.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="theme-tomorrow.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href="view-custom-smartly-prettified-object.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="no-js-only" style="text-align: center; vertical-align: middle; line-height: 100vh">textplain.js *live* requires Javascript.</div>
+<div class="js-only">
+    <div id="app">
+        <div id="app-header">
+            <h1 class="title">textplain.js *live*</h1>
+        </div>
+
+        <div id="app-links">
+            <a id="plain-text-toggle" class="v-button">hide plain text</a><br/>
+            <a id="ptss-toggle" class="v-button">show ptss</a><br/>
+            <a id="output-toggle" class="v-button">hide output</a><br/>
+            <a id="permalink" class="v-button">permalink</a><br/>
+            <a href="https://github.com/textplainly" target="_blank" class="v-button">github -></a>
+        </div>
+
+        <div id="app-pipeline">
+            <div id="app-ptss-panel">
+                <select id="stylesheet-select">
+                    <option value="rubyrhod.ptss" selected="selected">♦️ RubyRhod.ptss</option>
+                    <option value="gracedown.ptss">Gracedown.ptss</option>
+                    <option value="commonmark.ptss">ⓒ CommonMark.ptss</option>
+                    <option value="commonmark-fwd.ptss">CommonMark-fwd.ptss</option>
+                    <option value="commonmark.ptss --strict">CommonMark.ptss --strict</option>
+                    <option value="gfm.ptss">GFM.ptss</option>
+                    <option value="pandoc-markdown-strict.ptss">Pandoc-Markdown-strict.ptss</option>
+                    <option value="pandoc-markdown.ptss">Pandoc-Markdown.ptss</option>
+                    <option value="plainjane.ptss">🧑🏽‍🦰Plain Jane.ptss</option>
+                    <option value="markdown_hs.ptss">Markdown_HS.ptss</option>
+                    <option value="kitchen-sink.ptss">Kitchen-Sink.ptss</option>
+                    <option value="test-ptss-one.ptss">test-ptss-one.ptss</option>
+                    <option value="test-references.ptss">test-references.ptss</option>
+                    <option value="test-writers-prerogative.ptss">test-writers-prerogative.ptss</option>
+                </select>
+            </div>
+            <!-- todo[arch] generate this from the config in the JS. Do the same for the PTSS dropdown above.  -->
+            <div id="app-pipes-panel" class="dropdown d-inline">
+                <button id="pipes-select" class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="pipes setting">
+                (none enabled)
+                </button>
+                <div class="dropdown-menu" aria-labelledby="pipes-select">
+                    <li><h6 class="dropdown-header">pipes</h6></li>
+                    <div class="form-check form-switch">
+                        <input id="ConvertHeadingsToSections" class="form-check-input pipe-switch" type="checkbox" value="">
+                        <label class="form-check-label" for="ConvertHeadingsToSections">ConvertHeadingsToSections</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="ExportAllSectionsOrHeadings" class="form-check-input pipe-switch" type="checkbox" value="">
+                        <label class="form-check-label" for="ExportAllSectionsOrHeadings">ExportAllSectionsOrHeadings</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="NormalizeHeadingHierarchy" class="form-check-input pipe-switch" type="checkbox" value="" disabled>
+                        <label class="form-check-label" for="NormalizeHeadingHierarchy">NormalizeHeadingHierarchy</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="AddTOC" class="form-check-input pipe-switch" type="checkbox" value="">
+                        <label class="form-check-label" for="AddTOC">AddTOC</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input id="ValidateSTIR" class="form-check-input pipe-switch" type="checkbox" value="">
+                        <label class="form-check-label" for="ValidateSTIR">ValidateSTIR</label>
+                    </div>
+                </div>
+            </div>
+            <div id="app-renderer-panel">
+                <select id="renderer-select">
+                    <option value="html5" selected="selected">html5</option>
+                    <option value="pdf">PDF</option>
+                    <option value="markdown">markdown</option>
+                    <option value="none">none</option>
+                </select>
+            </div>
+            <div id="app-css-panel">
+                <select id="css-select">
+                    <option value="demo.css" selected="selected">demo.css</option>
+                    <option value="no CSS">no CSS</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="app-editor">
+            <div id="editor-toolbar">
+                <select id="sample-select">
+                    <!--
+                    todo:[tpl] use handlebars to populate this dropdown with all files in
+                    the source samples dir when building TPL.
+
+                    ALTERNATIVE ONE: if the server (e.g. GitHub pages) serves a dir view
+                     for the `./samples` URL, Javascript can dynamically populate it on-load.
+
+                    ALTERNATIVE TWO: treat the samples folder as a Text Assembly.
+                      - we could demo Text Assembly links
+                      - we could link to other sample files, which is useful in itself
+                      - if we implement WebFS, this would use that!
+                      - TBD: how would this work w/ the load any URL function? Does
+                        that load a new WebFS-based TextAssembly too? Or...?
+                    -->
+                    <option value="INTRO.md">INTRO.md</option>
+                    <option value="demo.md">demo.md</option>
+                    <option value="styles/markdown.md">styles/markdown.md</option>
+                    <option value="styles/gracedown/README.md">styles/gracedown</option>
+                    <option value="styles/gracedown/interjections.md">styles/gracedown/interjections</option>
+                    <option value="styles/gracedown/tables.md">styles/gracedown/tables</option>
+                    <option value="styles/RubyRhod.md">styles/rubyrhod.md</option>
+                    <option value="styles/Plain Jane.pj">styles/Plain Jane.pj</option>
+                    <option value="styles/markdown-it.md">styles/markdown-it.md</option>
+                    <option value="styles/pandoc-markdown.md">styles/pandoc-markdown.md</option>
+                    <option value="styles/Plain Jane.pj">styles/Plain Jane.pj</option>
+                    <option value="styles/beyond-markdown.jgm">styles/beyond-markdown.jgm</option>
+                    <option value="styles/test-ptss-one.tp1">styles/test-ptss-one.tp1</option>
+                    <option value="styles/test-writers-prerogative.tp1">styles/test-writers-prerogative.tp1</option>
+                    <option value="styles/kitchen-sink.ks">styles/kitchen-sink.ks</option>
+                    <option value="tutorials/creating-styles.md">tutorials/creating-styles.md</option>
+                    <option value="topics/magical-indentation.md">topics/magical-indentation.md</option>
+                    <option value="topics/graceful-degradation.md">topics/graceful-degradation.md</option>
+                    <option value="topics/problem-explorations.md">topics/Problem Explorations</option>
+                    <option value="topics/respecting-line-breaks.md">topics/Respecting Line Breaks</option>
+                    <option value="topics/style-explorations.md">topics/Style Explorations</option>
+                    <option value="topics/comparative-explorations.md">topics/Comparative Explorations</option>
+                    <option value="EDITED" selected="selected">(EDITED)</option>
+                    <option value="CLEAR"> - CLEAR -</option>
+                    <option value="URL"> - URL -</option>
+                </select>
+                <div id="settings" class="dropdown d-inline">
+                    <button id="settingsBtn" class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="settings">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="settingsBtn">
+                        <p>editor settings</p>
+
+                        <div id="line-wrap-setting" class="btn-group" role="group" aria-label="line wrap setting">
+                            <input type="radio" class="btn-check" name="wrapsetting" id="wrap-off" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="wrap-off">no wrap</label>
+
+                            <input type="radio" class="btn-check" name="wrapsetting" id="wrap-on" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="wrap-on">wrap</label>
+
+                            <input type="radio" class="btn-check" name="wrapsetting" id="wrap-indent" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="wrap-indent">indented wrap</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input id="showLineNums" class="form-check-input" type="checkbox" value="">
+                            <label class="form-check-label" for="showLineNums">show line numbers</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input id="showInvisibles" class="form-check-input" type="checkbox" value="">
+                            <label class="form-check-label" for="showInvisibles">show invisibles</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input id="syncScroll" class="form-check-input" type="checkbox" value="">
+                            <label class="form-check-label" for="syncScroll">sync scroll</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- todo[live] when the plain text exceeds the width of the editor text field (and
+                  horizontal scrolling activates), show a pop-up hint to the user that they
+                  can turn on wrapping, alternative automatically turn it on and let the user
+                  know they san turn it off manuall.  Only show this dialog once per session,
+                  unless the `don't ask me again` is checked, in which case use cookies to
+                  turn this off for all future sessions -->
+            <div id="editor"></div>
+        </div>
+
+        <div id="app-output">
+
+            <ul id="output-tabs" class="nav nav-tabs" role="tablist">
+                <!-- ! using dropdown attached to tab to change the tab's mode -->
+                <li class="nav-item btn-group" role="presentation">
+                    <button id="ir-tab"
+                            class="nav-link btn-sm" data-bs-toggle="tab" data-bs-target="#ir-tree-pane"
+                            type="button" role="tab">STIR
+                    </button>
+                    <button class="nav-link btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <div id="ir-view-mode" class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="irviewmode" id="ir-tree-mode" data-tpl-target-pane="#ir-tree-pane"  autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="ir-tree-mode">tree</label>
+
+                            <input type="radio" class="btn-check" name="irviewmode" id="ir-json-mode" data-tpl-target-pane="#ir-json-pane" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="ir-json-mode">json</label>
+
+                            <input type="radio" class="btn-check" name="irviewmode" id="ir-text-mode" data-tpl-target-pane="#ir-text-pane" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="ir-text-mode">text</label>
+
+                            <input type="radio" class="btn-check" name="irviewmode" id="ir-debug-mode" data-tpl-target-pane="#ir-debug-pane"  autocomplete="off">
+                            <label class="btn btn-outline-primary" for="ir-debug-mode">debug</label>
+                        </div>
+                    </ul>
+                </li>
+                 <li class="nav-item" role="presentation">
+                    <button id="toc-tab"
+                            class="nav-link btn-sm" data-bs-toggle="tab" data-bs-target="#toc-pane"
+                            type="button" role="tab" aria-controls="toc-pane" aria-selected="false">TOC
+                    </button>
+                </li>
+                <!-- ! using dropdown attached to tab to change the tab's mode -->
+                <li class="nav-item btn-group" role="presentation">
+                    <button id="rendering-tab"
+                            class="nav-link active btn-sm" data-bs-toggle="tab" data-bs-target="#render-preview-pane"
+                            type="button" role="tab">Rendering
+                    </button>
+                    <button class="nav-link btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <div id="render-view-mode" class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="renderviewmode" id="render-preview-mode" data-tpl-target-pane="#render-preview-pane"  autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="render-preview-mode">preview</label>
+
+                            <input type="radio" class="btn-check" name="renderviewmode" id="render-source-mode" data-tpl-target-pane="#render-source-pane" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="render-source-mode">source</label>
+
+                            <input type="radio" class="btn-check" name="renderviewmode" id="render-tree-mode" data-tpl-target-pane="#render-tree-pane"  autocomplete="off">
+                            <label class="btn btn-outline-primary" for="render-tree-mode">tree</label>
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+
+            <div id="output-tab-panes" class="tab-content">
+                <div id="ir-json-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="ir-tab">
+                    <pre><code id="ir-json"></code></pre>
+                </div>
+                <div id="ir-text-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="ir-tab">
+                    <pre><code id="ir-text"></code></pre>
+                </div>
+                <div id="ir-tree-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="ir-tab">
+                    <pre><code id="ir-tree"></code></pre>
+                </div>
+                <div id="ir-debug-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="ir-tab">
+                    <pre><code id="ir-debug"></code></pre>
+                </div>
+                <div id="toc-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="toc-tab">
+                    <pre><code id="toc"></code></pre>
+                </div>
+                <div id="referent-index-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="referent-index-tab">
+                    <pre><code id="referent-index"></code></pre>
+                </div>
+                <div id="render-preview-pane" class="tab-pane fade show active" role="tabpanel" aria-labelledby="rendering-tab">
+<!--
+`src` - The URL of the page to embed. Use a value of about:blank to embed an empty page that conforms
+ to the same-origin policy.
+
+ See https://stackoverflow.com/a/21655923/8910547 for an approach using about:blank
+-->
+                    <iframe id="render-preview-frame"
+                            title="Preview HTML rendering of the plain text"
+                            src="preview.html"
+                            sandbox="allow-same-origin allow-scripts"></iframe>
+                </div>
+                <div id="render-source-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="rendering-tabb">
+                    <pre><code id="html"></code></pre>
+                </div>
+                <div id="render-tree-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="rendering-tab">
+                    <pre><code id="html-tree"></code></pre>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="module" src="./textplain-live.mjs"></script>
+</body>
+<!-- todo[live] this app requires JS, but (1) make something reasonable display
+       when JS is disabled, such as a message saying what this is and that JS
+       needs to be enabled for it to work. (2) make that include the stuff we want search engines
+       to index. -->
+</html>

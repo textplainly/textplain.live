@@ -1,0 +1,45 @@
+              Plain Jane,  the human-to-human plain text style
+              ------------------------------------------------
+
+What does the plain text of a human writing purely for another human look like?
+
+Then what *minimal* prescriptions would be needed to make it machine readable?
+
+Plain Jane is an *human to human* style. It is a format that attempts to answer the above question.
+
+
+
+           ==========
+           L1 Section
+           ==========
+
+Plain Jane uses *dynamically leveled* section
+headings. So most docs, e.g. like Richard 
+Feynman's, can just use the following for
+their top level section, making it L1:
+
+L2 Section
+==========
+
+Any section heading can be intended. Writer's
+perogative.
+
+    L3 Section
+    ----------
+
+yada weeeee! Ok, gettting tired, need to
+take a break.
+
+--- Titled Thematic Break ---
+
+catching breadth. weeeeeee! Now here is an
+untitled thematic break, for comparison.
+
+---
+
+And next we have a more traditionally
+looking one.
+
+               * * *
+               
+The end.
