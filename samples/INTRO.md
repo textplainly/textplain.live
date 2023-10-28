@@ -5,7 +5,12 @@ Quick links:
 - [graceful degradation](topics/graceful-degradation.md)
 
 - [github pages](https://square.github.io/okhttp)
-  - [github.com](https://github.com/square/okhttp/blob/master/README.md) -- this apparently will work if running TPL on github pages
+  - [github.com](https://github.com/square/okhttp/blob/master/README.md) -- this DID NOT WORK, even when hosted on GitHub Pages:
+    ```
+    [Error] Origin https://textplainly.github.io is not allowed by Access-Control-Allow-Origin. Status code: 200
+    [Error] XMLHttpRequest cannot load https://github.com/square/okhttp/blob/master/README.md due to access control checks.
+    [Error] Failed to load resource: Origin https://textplainly.github.io is not allowed by Access-Control-Allow-Origin. Status code: 200 (README.md, line 0)
+    ```
   - [raw.githubusercontent.com + README.MD](https://raw.githubusercontent.com/square/okhttp/master/README.md) -- this DOES work from TPL hosted anywhere. 
   - [api.github.com](https://api.github.com/repos/square/okhttp/git/trees/master) - works too. BUT:
     > "For requests using Basic Authentication or OAuth, you can make up to 5,000 requests per hour. For unauthenticated requests, the rate limit allows you to make up to 60 requests per hour. Unauthenticated requests are associated with your IP address, and not the user making requests."

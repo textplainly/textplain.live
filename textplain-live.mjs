@@ -1,5 +1,5 @@
 /* TextPlain.js *Live* https://github.com/textplainly/textplain.js ©Vas Sudanagunta 2023 @license TBD */
-/* build: 2023-10-28 12:45:07 GMT−4 */
+/* DEBUG build: 2023-10-28 12:54:58 GMT−4 */
 
 
 var __create = Object.create;
@@ -4578,10 +4578,12 @@ var postPipeLine;
 var syncScrolling = true;
 function loadStyleSheet(displayname, name = displayname, options = {}) {
   const ptss = textplain.ptssParser.loadSheet(name, options);
+  console.log(`loading stylesheet ${name}${JSON.stringify(options)} as "${displayname}"`);
   const reader2 = new textplain.ptssParser.Parser(ptss);
   stylesheets[displayname] = { reader: reader2 };
 }
 function setStyleSheet(name) {
+  console.log(`setting stylesheet: "${name}"`);
   reader = stylesheets[name].reader;
 }
 async function updatePipeline(pipeIDs) {
@@ -4670,6 +4672,7 @@ var parsePipeAndRender = function() {
   stirTreePane.replaceChildren();
   stirDebugPane.replaceChildren();
   tocPane.replaceChildren();
+  console.log(previewBody);
   previewBody.replaceChildren();
   htmlPane.replaceChildren();
   htmlTreePane.replaceChildren();
@@ -4696,10 +4699,13 @@ var parsePipeAndRender = function() {
     previewBody.innerHTML = result;
     previewBody.querySelectorAll("a").forEach((a) => {
       a.addEventListener("click", (event) => {
+        console.log("attampting request to:", a.href);
         const xhttp = new XMLHttpRequest();
         xhttp.open("HEAD", a.href);
         xhttp.onreadystatechange = function() {
           if (this.readyState === this.DONE) {
+            console.log("  link status:", this.status);
+            console.log("  link content-type:", this.getResponseHeader("Content-Type"));
           }
         };
         xhttp.send();
@@ -4721,6 +4727,7 @@ var parsePipeAndRender = function() {
     markSelection();
   } catch (e) {
     const stageErrorTitle = `${stage} error`;
+    console.error(stageErrorTitle, e);
     const DOWN_ARROW = "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\u2B07\uFE0E</p>";
     let unrolledMsg = `<h2>\u274C ${stageErrorTitle}</h2>`;
     let cause = e;
@@ -4781,7 +4788,9 @@ function loadSample(selection) {
   }
   if (selection === "URL") {
     let target = window.prompt("URL", "https://raw.githubusercontent.com/vassudanagunta/htmlnorm/main/README.md");
+    console.log("fetching", target);
     fetch(target).then(function(response) {
+      console.log("status", response.status, response.statusText);
       response.text().then(function(data) {
         editedInput = data;
         $("#sample-select option:contains(EDITED)").prop({ selected: true });
@@ -4790,6 +4799,7 @@ function loadSample(selection) {
         editor.navigateFileEnd();
       });
     }).catch(function(error) {
+      console.error(error);
       window.alert(error);
     });
     return;
@@ -4799,6 +4809,7 @@ function loadSample(selection) {
     editor.navigateFileEnd();
   } else {
     const path = "samples/" + selection;
+    console.log("loading", path);
     $.get(path, function(data) {
       editor.getSession().setValue(data);
       lastChangeIsSampleLoad = true;
@@ -4839,6 +4850,7 @@ function setupBootstrapTabWithDropdownSelectedTarget(dropdownTab, dropdownInputs
   });
 }
 function init() {
+  console.log("initializing interface...");
   stirJsonPane = document.querySelector("#ir-json");
   stirTextPane = document.querySelector("#ir-text");
   stirTreePane = document.querySelector("#ir-tree");
@@ -4889,6 +4901,7 @@ function init() {
         label = "(none enabled)";
       prePipeLine.position();
       postPipeLine.position();
+      console.log("enabled", enabled);
       pipesButton.innerHTML = label;
       updatePipeline(enabled);
     };
@@ -5043,7 +5056,9 @@ function init() {
   }
 }
 document.addEventListener("DOMContentLoaded", function() {
+  console.log("DOMContentLoaded");
   $("#render-preview-frame").on("load", function() {
+    console.log("#render-preview-frame", this);
     init();
   });
 });
